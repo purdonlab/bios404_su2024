@@ -91,7 +91,7 @@ def compute_periodogram(x):
     return S_xx, freqs
 
 
-# Copy the funtion definition `compute_periodogran` to here, and remove
+# Copy the funtion definition `compute_tapered_periodogran` to here, and remove
 # these commented line.
 def compute_tapered_periodogram(x, window_type):    
     """Compute periodogram using after applying given taper
@@ -120,32 +120,46 @@ def compute_tapered_periodogram(x, window_type):
     return St_xx, freqs
 
 
-def multitaper_periodogram(timeseries, nw=4, ntapers=4, fs=1):
+# Copy the funtion definition `compute_multitaper_spectrum` to here, and remove
+# these commented line.
+def compute_multitaper_spectrum(x, NW, Kmax):
+    """Compute multitaper spectrum with Kmax tapers of NW 
+    time-bandwidth product
+
+    Parameters:
+        x:
+            the signal
+        NW: 
+            time-bandwidth product
+        Kmax:
+            Number of tapers to use
+    Returns:
+        S_xx:
+            periodogram.
+        freqs:
+         associated frequency (normalized) points.
     """
-    Fill in this function!
-    arguments:
-        timeseries - timeseries you are computing the multitaper periodogram of
-        nw - time-half-bandwidth product, defaults to 4
-        ntapers - number of DPSS tapers to use, defaults to 4
-        fs - sampling frequency, defaults to 1
-    returns:
-        multitaper_psd - multitaper periodogram
-        freqs - same as before
-    """
-    N = len(timeseries)
-    tapers = signal.windows.dpss(N, nw, Kmax=ntapers) * np.sqrt(N)
+    n = x.shape[-1]
+    # generate the tapers, use norm=2 keyword
+    dpss_tapers = signal.windows.dpss(n, NW, Kmax=Kmax, norm=2)
+    # These tapers are normalized by window length, so you need to take care of them.
 
-    # Loop through tapers to compute different spectral estimates
-    S_yy_est = np.array((ntapers, N))
+    # Cycle through the tapers in a for loop, and get the tapered estimate
+    # Store the generate estimates in a list.
+    St_xxs = []
+    for taper in dpss_tapers:
+        # taper the signal
+        tapered_x = x * taper
 
-    for (i,taper) in enumerate(tapers):
-        S_yy_est[i,:] = periodogram_tapered(timeseries, taper)[0]
-
-    multitaper_psd = S_yy_est.mean(axis=0)
-
-    freqs = np.linspace(0, fs, num=N)
-
-    return multitaper_psd, freqs
+        # Compute the periodogram using your written `compute_periodogram` function
+        # This is 'reuse' of code, and highly encouraged!!!
+        St_xx, freqs = compute_periodogram(tapered_x)
+        St_xxs.append(St_xx * n)
+    # We will stack the rows in the list vertically to create a numpy array
+    St_xxs = np.vstack(St_xxs)
+    # Then take its mean in first (0th) dimension to get the multitaper estimate
+    Smtm_xx = St_xxs.mean(0)
+    return Smtm_xx, freqs
 
 
 def multitaper_spectrogram(timeseries, window_size = 1024, nw = 4, ntapers = 4, fs=1):
