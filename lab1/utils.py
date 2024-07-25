@@ -160,31 +160,3 @@ def compute_multitaper_spectrum(x, NW, Kmax):
     # Then take its mean in first (0th) dimension to get the multitaper estimate
     Smtm_xx = St_xxs.mean(0)
     return Smtm_xx, freqs
-
-
-def multitaper_spectrogram(timeseries, window_size = 1024, nw = 4, ntapers = 4, fs=1):
-    """
-    Fill in this function!
-    arguments:
-        timeseries - timeseries of which to compute the multitaper spectrogram
-        window_size - length of segments to break the timeseries into, defaults to 1024
-        nw - time-half-bandwidth product, defaults to 4
-        ntapers - number of DPSS tapers to use, defaults to 4
-        fs - sampling frequency of the data, defaults to 1
-    returns:
-        spectrogram - 2D numpy array of spectrogram, first axis is frequency axis, second axis is time axis.
-        freqs - same as before
-        times - the starting time of all the windows, in seconds.
-    """
-    N = len(timeseries)
-
-    nwindows = N // window_size
-    spectrogram = np.zeros((window_size, nwindows))
-
-    for i in range(nwindows):
-        spectrogram[:,i] = multitaper_periodogram(timeseries[i*window_size:(i+1)*window_size], nw=nw, ntapers=ntapers, fs=fs)[0]
-
-    freqs = np.linspace(0, fs, num=window_size)
-    times = np.linspace(0, nwindows*(window_size / fs), num=nwindows)
-
-    return spectrogram, freqs, times
