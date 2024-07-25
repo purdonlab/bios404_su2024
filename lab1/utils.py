@@ -69,11 +69,10 @@ def compute_autocovaraince(x, max_lag=512):
 # these commented line.
 def compute_periodogram(x):
     """Compute periodogram using fft directly on the signal.
+    
     Parameters:
         x:
             the signal
-        max_lag: 
-            maximum lag to consider for autocovaraince sequenc
     Returns:
         S_xx:
             periodogram.
@@ -92,23 +91,33 @@ def compute_periodogram(x):
     return S_xx, freqs
 
 
-def periodogram_tapered(timeseries, taper, fs=1):
-    """
-    Fill in this function!
-    arguments:
-        timeseries - the time series of which to compute the tapered periodogram
-        taper - the taper to apply
-        fs - sampling frequency, defaults to 1
-    returns:
-        tapered_psd - the tapered periodogram
-        freqs - same as before
-    """
-    
-    sig = timeseries * taper
+# Copy the funtion definition `compute_periodogran` to here, and remove
+# these commented line.
+def compute_tapered_periodogram(x, window_type):    
+    """Compute periodogram using after applying given taper
 
-    tapered_psd, freqs = periodogram(sig, fs=fs)
+    Parameters:
+        x:
+            the signal
+        window_type: 
+            the taper to apply before computing periodogram
+    Returns:
+        S_xx:
+            periodogram.
+        freqs:
+         associated frequency (normalized) points.
+    """
+    n = x.shape[-1]
+    # generate the taper
+    taper = signal.get_window(window_type, n)
 
-    return tapered_psd, freqs
+    # taper the signal
+    tapered_x = x * taper
+
+    # Compute the periodogram using your written `compute_periodogram` function
+    # This is 'reuse' of code, and highly encouraged!!!
+    St_xx, freqs = compute_periodogram(tapered_x)
+    return St_xx, freqs
 
 
 def multitaper_periodogram(timeseries, nw=4, ntapers=4, fs=1):
