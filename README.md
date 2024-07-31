@@ -18,3 +18,11 @@ algorithm, and applications to neuroscience.
 4. Students will be able to use the SOMATA python package that stream-
 lines analysis of neural oscillation using the abovementioned time-domain
 analysis tools.
+
+## Environment setup instructions
+You can install the requirered environment using the `env-lab.yml` file.
+If you run into any error during installtions, that's due to conda's failure of dependency resolution.
+In that case, we recommend to use mamba. To do so, simply download miniforge from their github page
+[https://github.com/conda-forge/miniforge](https://github.com/conda-forge/miniforge), and install.
+With Miniforge in your path, you can use `mamba` to create the environment from the `env-lab.yml`
+file 
