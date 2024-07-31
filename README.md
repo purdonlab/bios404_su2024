@@ -1,10 +1,20 @@
-By the end of the lab, students should have:
-- implemented a periodogram, tapered periodogram and multitaper spectrum computation, built from basic scipy functions
-- applied them in three different examples
-  - white noise
-  - AR(2) process
-  - AR(4) process
-- realized how to control Bias and Variance in spectrum estimates
-- computed multitaper spectrum from segments of a real EEG data under general anesthesia
-- created a spectrogram representation of a real EEG data under general anesthesia.
+# BIOS 404: Time series analysis for neuroscience data using state space models
 
+This course will present the basics of state space modeling to analyze time series
+data that are frequently encountered in neuroscience problems. The course
+lectures will cover basics of time series analysis, Markov chains, linear state space
+models, switching state space models, and algorithms for learning and inference.
+Students and instructors will work through practical data analysis exercises in
+Python in weekly labs.
+
+## Objectives
+1. Students will learn the basics of frequency domain analysis methods (i.e.,
+spectral estimation) and understand their limitation.
+2. Students will appreciate the complexity of analyzing neural oscillations in
+electrophysiological recordings.
+3. Students will have a working understanding of the nuts and bolts of fitting
+state space models, including Kalman filtering and smoothing, the EM
+algorithm, and applications to neuroscience.
+4. Students will be able to use the SOMATA python package that stream-
+lines analysis of neural oscillation using the abovementioned time-domain
+analysis tools.
