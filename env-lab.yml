@@ -1,0 +1,12 @@
+# Environment for lab
+# usage: $ conda env create --file=env-lab.yml
+name: bioslab
+channels:
+- pytorch
+- conda-forge
+dependencies:
+- python >= 3.8
+- ipywidgets
+- ipympl
+- notebook
+- somata
